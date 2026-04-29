@@ -23,8 +23,6 @@ const Modal = ({ isOpen, onClose }) => {
     const DataFolder = {
         "Desa-dongi": [
             { id: "POS-01", nama: "Data Posyandu Mawar" },
-            { id: "POS-02", nama: "Data Posyandu Melati" },
-            { id: "POS-03", nama: "Data Posyandu Kenanga" },
         ],
         "Desa-otting": [
             { id: "POS-01", nama: "Data Posyandu Anggrek" },
@@ -130,8 +128,8 @@ const Modal = ({ isOpen, onClose }) => {
                                                 key={folder.id}
                                                 onClick={() => setSelectedFolder(folder)}
                                                 className={`flex items-center p-3 rounded-xl border-2 text-left transition-all cursor-pointer ${selectedFolder?.id === folder.id
-                                                        ? 'bg-sky-600 border-sky-600 text-white shadow-md'
-                                                        : 'bg-white border-sky-100 hover:border-sky-400 text-sky-700'
+                                                    ? 'bg-sky-600 border-sky-600 text-white shadow-md'
+                                                    : 'bg-white border-sky-100 hover:border-sky-400 text-sky-700'
                                                     }`}
                                             >
                                                 <i className={`ri-folder-open-fill mr-3 text-xl ${selectedFolder?.id === folder.id ? 'text-white' : 'text-sky-400'}`}></i>
