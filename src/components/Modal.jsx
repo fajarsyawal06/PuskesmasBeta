@@ -13,6 +13,8 @@ const Modal = ({ isOpen, onClose }) => {
     const [selectedDesa, setSelectedDesa] = useState(userRole === 'admin' ? "" : userRole);
 
     const [foldersToDisplay, setFoldersToDisplay] = useState([]);
+    const [isRedirecting, setIsRedirecting] = useState(false);
+    const [adminRekapIds, setAdminRekapIds] = useState({ ibu: "", anak: "" });
 
     useEffect(() => {
         if (userRole !== 'admin') {
@@ -29,7 +31,9 @@ const Modal = ({ isOpen, onClose }) => {
                 let loadedFolders = [];
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    if (data.role !== 'admin' && data.posyandus) {
+                    if (data.role === 'admin') {
+                        setAdminRekapIds({ ibu: data.rekapIbuId || "", anak: data.rekapAnakId || "" });
+                    } else if (data.posyandus) {
                         // Tempelkan asal desa ke setiap posyandu agar URL routing nantinya benar
                         const posyandusWithDesa = data.posyandus.map(p => ({ ...p, desa: data.role }));
                         loadedFolders = [...loadedFolders, ...posyandusWithDesa];
@@ -50,7 +54,38 @@ const Modal = ({ isOpen, onClose }) => {
         setSelectedFolder(null);
     };
 
-    const handleKategoriSelect = (kategori) => {
+    const handleKategoriSelect = async (kategori) => {
+        if (userRole === 'admin') {
+            if (!selectedBulan) {
+                alert("Silahkan pilih periode bulan terlebih dahulu");
+                return;
+            }
+
+            const spreadsheetId = kategori === 'ibu' ? adminRekapIds.ibu : adminRekapIds.anak;
+            if (!spreadsheetId) {
+                alert(`ID Spreadsheet Rekapitulasi ${kategori.toUpperCase()} belum diatur di Firestore.`);
+                return;
+            }
+            
+            setIsRedirecting(true);
+            try {
+                const response = await fetch(`/api/get-rekap-url?kategori=${kategori}&bulan=${selectedBulan}&spreadsheetId=${spreadsheetId}`);
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    window.open(result.url, '_blank');
+                    onClose();
+                } else {
+                    alert("Gagal membuka spreadsheet: " + (result.error || "Terjadi kesalahan"));
+                }
+            } catch (error) {
+                alert("Terjadi kesalahan sistem: " + error.message);
+            } finally {
+                setIsRedirecting(false);
+            }
+            return;
+        }
+
         if (!selectedFolder) {
             alert("Silahkan pilih folder data terlebih dahulu");
             return;
@@ -105,8 +140,8 @@ const Modal = ({ isOpen, onClose }) => {
                             </select>
                         </div>
 
-                        {/* Folder Data / Posyandu */}
-                        {selectedBulan && (
+                        {/* Folder Data / Posyandu (Hanya untuk Non-Admin) */}
+                        {selectedBulan && userRole !== 'admin' && (
                             <div className="flex flex-col gap-3 animate-in fade-in duration-300">
                                 <label className="text-sm font-semibold text-sky-700 ml-1 text-center">Pilih Folder Data / Posyandu</label>
                                 <div className="grid grid-cols-1 gap-2 max-h-56 overflow-y-auto pr-1">
@@ -140,8 +175,14 @@ const Modal = ({ isOpen, onClose }) => {
                         )}
 
                         {/* Kategori Layanan */}
-                        {selectedFolder && (
-                            <div className="flex flex-col gap-3 mt-2 animate-in slide-in-from-bottom duration-300">
+                        {(selectedFolder || (userRole === 'admin' && selectedBulan)) && (
+                            <div className="flex flex-col gap-3 mt-2 animate-in slide-in-from-bottom duration-300 relative">
+                                {isRedirecting && (
+                                    <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex flex-col items-center justify-center rounded-2xl">
+                                        <div className="w-8 h-8 border-4 border-sky-500 border-t-transparent rounded-full animate-spin mb-2"></div>
+                                        <p className="text-sky-700 font-bold animate-pulse">Mengalihkan ke Spreadsheet...</p>
+                                    </div>
+                                )}
                                 <label className="text-sm font-semibold text-sky-700 text-center">Pilih Kategori Layanan</label>
                                 <div className="flex gap-3">
                                     <button

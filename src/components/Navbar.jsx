@@ -62,23 +62,26 @@ export default function Navbar() {
 
     return (
         <nav>
-            <div className="fixed w-full top-0 z-40 flex justify-between items-center bg-white px-8 py-6 shadow-lg" >
-                <div className="logo flex items-center gap-2">
-                    <i className="ri-hospital-line text-sky-600 text-3xl"></i>
-                    <h1 className="text-sky-600 text-xl font-normal">Puskesmas</h1>
+            <div className="fixed w-full top-0 z-40 flex justify-between items-center bg-white px-4 md:px-8 py-3 md:py-6 shadow-md" >
+                <div className="logo flex items-center gap-4">
+                    <i className="ri-hospital-line text-sky-600 text-2xl md:text-3xl"></i>
+                    <div className="flex flex-col justify-center">
+                        <h1 className="text-sky-600 text-md md:text-xl font-bold">SIPUS</h1>
+                        <p className="text-sky-600 text-[6px] md:text-sm font-normal">Sistem Informasi Puskesmas</p>
+                    </div>
                 </div>
                 <div className="relative">
                     <button
                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                         onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)}
-                        className="flex items-center gap-3 focus:outline-none cursor-pointer p-2 hover:bg-gray-50 rounded-xl transition-colors"
+                        className="flex items-center gap-2 md:gap-3 focus:outline-none cursor-pointer p-1 md:p-2 hover:bg-gray-50 rounded-xl transition-colors"
                     >
-                        <div className="text-right hidden sm:block">
-                            <p className="text-sky-700 font-bold capitalize leading-tight">{formatName(user?.role)}</p>
-                            <p className="text-xs text-gray-500">{user?.email}</p>
+                        <div className="text-right flex flex-col justify-center">
+                            <p className="text-sky-700 font-bold capitalize leading-tight text-sm md:text-base">{formatName(user?.role)}</p>
+                            <p className="text-[8px] md:text-xs text-gray-500 truncate max-w-[100px] md:max-w-[200px]">{user?.email}</p>
                         </div>
-                        <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center text-sky-600 border border-sky-200">
-                            <i className="ri-user-3-fill text-xl"></i>
+                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-sky-100 flex items-center justify-center text-sky-600 border border-sky-200">
+                            <i className="ri-user-3-fill text-lg md:text-xl"></i>
                         </div>
                         <i className={`ri-arrow-down-s-line text-gray-400 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}></i>
                     </button>

@@ -52,6 +52,7 @@ export default async function handler(req, res) {
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: spreadsheetId,
             range: range,
+            valueRenderOption: 'UNFORMATTED_VALUE', // <-- Memaksa Sheets API untuk mengirimkan angka murni (1000) tanpa format koma (1,000)
         });
 
         res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -64,17 +65,17 @@ export default async function handler(req, res) {
         const formattedValues = rawValues.map(row => {
             if (kategori === 'anak') {
                 return [
-                    row[0] || "",         // Nomor (Kolom A)
-                    row[1] || "",         // Uraian Kegiatan (Kolom B)
-                    row[targetIndex] || "", // Laki-laki
-                    row[pIndex] || "",      // Perempuan
-                    row[totalIndex] || ""   // Total
+                    row[0] ?? "",         // Nomor (Kolom A)
+                    row[1] ?? "",         // Uraian Kegiatan (Kolom B)
+                    row[targetIndex] ?? "", // Laki-laki
+                    row[pIndex] ?? "",      // Perempuan
+                    row[totalIndex] ?? ""   // Total
                 ];
             } else {
                 return [
-                    row[0] || "",         // Nomor (Kolom A)
-                    row[1] || "",         // Uraian Kegiatan (Kolom B)
-                    row[targetIndex] || "" // Data angka
+                    row[0] ?? "",         // Nomor (Kolom A)
+                    row[1] ?? "",         // Uraian Kegiatan (Kolom B)
+                    row[targetIndex] ?? "" // Data angka
                 ];
             }
         });

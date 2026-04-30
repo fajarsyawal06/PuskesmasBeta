@@ -52,13 +52,13 @@ export default function Login() {
                     <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
                         <i className="ri-hospital-line text-4xl"></i>
                     </div>
-                    <h1 className="text-2xl font-bold mb-1">Sistem Laporan LB3</h1>
+                    <h1 className="text-xl md:text-2xl font-bold">SIPUS</h1>
+                    <p className="text-sky-100 text-md font-bold mb-2">Sistem Informasi Puskesmas</p>
                     <p className="text-sky-100 text-sm">Puskesmas Dongi - Kab. Sidenreng Rappang</p>
                 </div>
 
                 {/* Bagian Form */}
                 <div className="p-8">
-                    <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">Silakan Login</h2>
 
                     {/* Pesan Error */}
                     {error && (
@@ -108,7 +108,7 @@ export default function Login() {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className={`w-full mt-2 py-3.5 rounded-xl font-bold text-white shadow-lg transition-all ${isLoading ? 'bg-sky-400 cursor-not-allowed' : 'bg-sky-600 hover:bg-sky-700 hover:-translate-y-0.5'
+                            className={`w-full mt-2 py-3.5 rounded-xl font-bold text-white shadow-lg transition-all cursor-pointer ${isLoading ? 'bg-sky-400 cursor-not-allowed' : 'bg-sky-600 hover:bg-sky-700 hover:-translate-y-0.5'
                                 }`}
                         >
                             {isLoading ? (
