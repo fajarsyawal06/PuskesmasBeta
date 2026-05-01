@@ -38,7 +38,7 @@ export default async function handler(req, res) {
         "desa-otting": "D",
         "desa-bulucenrana": "E",
         "desa-betao": "F",
-        "desa-betao-riase": "G",
+        "desa-betris": "G",
         "desa-kalempang": "H"
     };
 
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
         "desa-otting": "F:H",
         "desa-bulucenrana": "I:K",
         "desa-betao": "L:N",
-        "desa-betao-riase": "O:Q",
+        "desa-betris": "O:Q",
         "desa-kalempang": "R:T"
     };
 
@@ -84,7 +84,7 @@ export default async function handler(req, res) {
             if (kategori === 'ibu') {
                 const col = rekapKolomIbu[desa.toLowerCase()];
                 if (col) {
-                    rekapRange = `${tabRekap}!${col}9:${col}${endRow}`;
+                    rekapRange = `${tabRekap}!${col}8:${col}${endRow - 1}`;
                 }
             } else {
                 const cols = rekapKolomAnak[desa.toLowerCase()];
@@ -106,9 +106,9 @@ export default async function handler(req, res) {
                 } catch (rekapError) {
                     console.error(`Gagal auto-sync rekapitulasi desa ${desa}:`, rekapError);
                     // Kita kirim peringatan ini ke frontend agar user tahu
-                    return res.status(200).json({ 
-                        success: true, 
-                        warning: `Data desa tersimpan, namun gagal menyinkronkan ke Rekapitulasi. Pesan sistem: ${rekapError.message}` 
+                    return res.status(200).json({
+                        success: true,
+                        warning: `Data desa tersimpan, namun gagal menyinkronkan ke Rekapitulasi. Pesan sistem: ${rekapError.message}`
                     });
                 }
             }
