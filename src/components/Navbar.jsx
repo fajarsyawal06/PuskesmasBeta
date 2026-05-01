@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from '../AuthContext';
 import { updatePassword } from "firebase/auth";
 import { auth } from '../firebase';
+import { showSuccessAlert } from '../utils/alertUtils';
 
 export default function Navbar() {
     const { user, logout } = useAuth();
@@ -38,7 +39,7 @@ export default function Navbar() {
         try {
             if (auth.currentUser) {
                 await updatePassword(auth.currentUser, newPassword);
-                alert("Password berhasil diubah. Silakan login kembali dengan password baru.");
+                showSuccessAlert('Berhasil', 'Password berhasil diubah. Silakan login kembali dengan password baru.');
                 setIsPasswordModalOpen(false);
                 setNewPassword("");
 

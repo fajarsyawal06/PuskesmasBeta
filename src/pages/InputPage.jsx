@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
+import { showSuccessAlert, showErrorAlert, showWarningAlert, showConfirmAlert } from '../utils/alertUtils';
 import AnakTable from '../components/AnakTable';
 import IbuTable from '../components/IbuTable';
 import { barisSatuKolom } from '../config/tableConfig';
@@ -106,6 +107,17 @@ export default function InputData() {
     };
 
     const handleSimpan = async () => {
+        const isConfirmed = await showConfirmAlert(
+            'Apakah Anda yakin?',
+            'Pastikan semua data yang diinput sudah benar sebelum disimpan ke sistem.',
+            'Ya, Simpan Data!',
+            'Batal'
+        );
+
+        if (!isConfirmed) {
+            return; // Jika user menekan batal, hentikan fungsi simpan
+        }
+
         setIsLoading(true);
 
         let valuesToSave;
@@ -152,14 +164,14 @@ export default function InputData() {
             const result = await response.json();
             if (response.ok && result.success) {
                 if (result.warning) {
-                    alert("⚠️ PERINGATAN: " + result.warning);
+                    showWarningAlert('Tersimpan Sebagian', result.warning);
                 } else {
-                    alert("Data laporan berhasil diperbarui!");
+                    showSuccessAlert('Berhasil!', 'Data laporan berhasil diperbarui!');
                 }
             }
             else throw new Error("Gagal menyimpan data");
         } catch (error) {
-            alert("Terjadi kesalahan: " + error.message);
+            showErrorAlert('Gagal', 'Terjadi kesalahan: ' + error.message);
         } finally {
             setIsLoading(false);
         }

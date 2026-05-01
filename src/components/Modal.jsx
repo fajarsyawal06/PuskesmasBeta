@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from '../AuthContext';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../firebase';
+import { showErrorAlert, showWarningAlert } from '../utils/alertUtils';
 const Modal = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
     const { user } = useAuth();
@@ -57,13 +58,13 @@ const Modal = ({ isOpen, onClose }) => {
     const handleKategoriSelect = async (kategori) => {
         if (userRole === 'admin') {
             if (!selectedBulan) {
-                alert("Silahkan pilih periode bulan terlebih dahulu");
+                showWarningAlert('Pilih Bulan', 'Silakan pilih periode bulan terlebih dahulu');
                 return;
             }
 
             const spreadsheetId = kategori === 'ibu' ? adminRekapIds.ibu : adminRekapIds.anak;
             if (!spreadsheetId) {
-                alert(`ID Spreadsheet Rekapitulasi ${kategori.toUpperCase()} belum diatur di Firestore.`);
+                showErrorAlert('ID Tidak Ditemukan', `ID Spreadsheet Rekapitulasi ${kategori.toUpperCase()} belum diatur di Firestore.`);
                 return;
             }
             
@@ -76,10 +77,10 @@ const Modal = ({ isOpen, onClose }) => {
                     window.open(result.url, '_blank');
                     onClose();
                 } else {
-                    alert("Gagal membuka spreadsheet: " + (result.error || "Terjadi kesalahan"));
+                    showErrorAlert('Gagal Membuka', "Gagal membuka spreadsheet: " + (result.error || "Terjadi kesalahan"));
                 }
             } catch (error) {
-                alert("Terjadi kesalahan sistem: " + error.message);
+                showErrorAlert('Error Sistem', "Terjadi kesalahan sistem: " + error.message);
             } finally {
                 setIsRedirecting(false);
             }
@@ -87,7 +88,7 @@ const Modal = ({ isOpen, onClose }) => {
         }
 
         if (!selectedFolder) {
-            alert("Silahkan pilih folder data terlebih dahulu");
+            showWarningAlert('Pilih Folder', 'Silakan pilih folder data terlebih dahulu');
             return;
         }
 
@@ -95,7 +96,7 @@ const Modal = ({ isOpen, onClose }) => {
         const spreadsheetId = selectedFolder.spreadsheetId;
 
         if (!spreadsheetId) {
-            alert("ID Spreadsheet untuk Posyandu ini belum dikonfigurasi.");
+            showErrorAlert('Konfigurasi Belum Selesai', 'ID Spreadsheet untuk Posyandu ini belum dikonfigurasi.');
             return;
         }
 
