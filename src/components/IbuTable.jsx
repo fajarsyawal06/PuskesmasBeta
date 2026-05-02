@@ -2,13 +2,14 @@ import { barisReadonly, barisRumus } from '../config/tableConfig';
 
 export default function IbuTable({ singkatanBulan, tableData, handleChange }) {
     return (
-        <table className="w-full border-collapse border border-black text-sm">
-            <thead>
-                <tr>
-                    <th className="border border-black p-2 w-12 text-center bg-gray-50" rowSpan={2}>NO.</th>
-                    <th className="border border-black p-2 text-center bg-gray-50" rowSpan={2}>URAIAN KEGIATAN</th>
-                    <th className="border border-black p-1 text-center w-32 bg-gray-50">BULAN</th>
-                </tr>
+        <div className="w-full overflow-x-auto">
+            <table className="w-full min-w-[800px] border-collapse border border-black text-sm">
+                <thead>
+                    <tr>
+                        <th className="border border-black p-2 w-12 text-center bg-gray-50" rowSpan={2}>NO.</th>
+                        <th className="border border-black p-2 text-center bg-gray-50" rowSpan={2}>URAIAN KEGIATAN</th>
+                        <th className="border border-black p-1 text-center w-32 bg-gray-50">BULAN</th>
+                    </tr>
                 <tr>
                     <th className="border border-black p-1 text-center uppercase bg-gray-50">{singkatanBulan}</th>
                 </tr>
@@ -69,5 +70,6 @@ export default function IbuTable({ singkatanBulan, tableData, handleChange }) {
                 })}
             </tbody>
         </table>
+        </div>
     );
 }

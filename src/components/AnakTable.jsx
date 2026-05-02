@@ -2,9 +2,10 @@ import { barisReadonly, barisRumus, barisSatuKolom } from '../config/tableConfig
 
 export default function AnakTable({ bulan, tableData, handleChangeAnak }) {
     return (
-        <table className="w-full border-collapse border border-black text-sm">
-            <thead>
-                <tr>
+        <div className="w-full overflow-x-auto">
+            <table className="w-full min-w-[800px] border-collapse border border-black text-sm">
+                <thead>
+                    <tr>
                     <th className="border border-black p-2 w-12 text-center bg-gray-50" rowSpan={3}>NO</th>
                     <th className="border border-black p-2 text-center bg-gray-50 uppercase" rowSpan={3}>INDIKATOR</th>
                     <th className="border border-black p-1 text-center uppercase bg-gray-50" colSpan={3}>{bulan.toUpperCase()}</th>
@@ -126,5 +127,6 @@ export default function AnakTable({ bulan, tableData, handleChangeAnak }) {
                 })}
             </tbody>
         </table>
+        </div>
     );
 }
